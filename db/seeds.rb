@@ -1,11 +1,20 @@
-tour_d_argent = Restaurant.new({
-  name: "La Tour d'Argent",
-  address: "15 Quai de la Tournelle, 75005 Paris"
-})
-tour_d_argent.save
+require 'open-uri'
+require 'nokogiri'
 
-chez_gladines = Restaurant.new({
-  name: "Chez Gladines",
-  address: "30 Rue des cinq Diamants, 75013 Paris"
-})
-chez_gladines.save
+url = "https://sao-paulo.restorando.com.br/restaurantes"
+
+doc = Nokogiri::HTML(open(url).read)
+
+doc.search('.restaurant').each do |box|
+  name = box.search('h4 a').text
+  address = box.search('.info-column a').first.text.strip
+  rating = box.search('.stars .full').text.size
+  image = box.search('.restaurant-image img').first.attributes['src'].value
+
+  r = Restaurant.new
+  r.name = name
+  r.address = address
+  r.rating = rating
+  r.image = image
+  r.save
+end

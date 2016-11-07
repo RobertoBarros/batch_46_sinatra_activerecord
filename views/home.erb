@@ -1,0 +1,14 @@
+<a href='/new'>Criar Restaurant</a>
+
+
+<% @restaurants.each do |restaurant| %>
+  <h1>
+    <a href="/show/<%= restaurant.id %>">
+      <%= restaurant.name %>
+    </a>
+  </h1>
+  <img src="<%= restaurant.image %>" style="widht: 50px; height: 50px;">
+  <p>
+    <%= restaurant.address %>
+  </p>
+<% end %>
